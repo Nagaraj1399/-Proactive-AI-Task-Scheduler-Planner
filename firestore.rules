@@ -1,0 +1,38 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Global Safety Net: default-deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Rules for User Tasks subcollection
+    match /users/{userId}/tasks/{taskId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Rules for User Habits subcollection
+    match /users/{userId}/habits/{habitId} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Rules for User Events subcollection
+    match /users/{userId}/events/{eventId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Remix: Proactive AI Task Scheduler \u0026 Planner",
+  "description": "An AI-powered proactive task scheduling, prioritization, and smart notification system that helps users beat deadlines and manage habits using Gemini.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

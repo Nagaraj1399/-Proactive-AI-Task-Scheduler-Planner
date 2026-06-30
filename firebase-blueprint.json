@@ -1,0 +1,89 @@
+{
+  "entities": {
+    "TaskStep": {
+      "title": "TaskStep",
+      "description": "A sub-step for a task",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "duration": { "type": "integer" },
+        "completed": { "type": "boolean" }
+      },
+      "required": ["id", "title", "duration", "completed"]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "A user task with auto-prioritization details",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "estimatedDuration": { "type": "integer" },
+        "priorityLevel": { "type": "string", "enum": ["high", "medium", "low"] },
+        "priorityScore": { "type": "integer" },
+        "priorityReasoning": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "completed", "overdue"] },
+        "steps": {
+          "type": "array",
+          "description": "List of sub-steps"
+        },
+        "scheduledStart": { "type": "string" },
+        "scheduledEnd": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "completedAt": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "category", "dueDate", "estimatedDuration", "priorityLevel", "priorityScore", "priorityReasoning", "status", "steps", "createdAt"]
+    },
+    "Habit": {
+      "title": "Habit",
+      "description": "A recurring daily or weekly habit",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "frequency": { "type": "string", "enum": ["daily", "weekly"] },
+        "streak": { "type": "integer" },
+        "lastCompletedDate": { "type": "string" },
+        "history": {
+          "type": "array"
+        },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "name", "description", "frequency", "streak", "history", "createdAt"]
+    },
+    "CalendarEvent": {
+      "title": "CalendarEvent",
+      "description": "A calendar slot for a task or habit",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "start": { "type": "string" },
+        "end": { "type": "string" },
+        "isAllDay": { "type": "boolean" },
+        "type": { "type": "string", "enum": ["work", "personal", "task", "habit"] },
+        "associatedId": { "type": "string" }
+      },
+      "required": ["id", "title", "start", "end", "isAllDay", "type"]
+    }
+  },
+  "firestore": {
+    "users/{userId}/tasks/{taskId}": {
+      "schema": "Task",
+      "description": "Collection of tasks for a given user"
+    },
+    "users/{userId}/habits/{habitId}": {
+      "schema": "Habit",
+      "description": "Collection of habits for a given user"
+    },
+    "users/{userId}/events/{eventId}": {
+      "schema": "CalendarEvent",
+      "description": "Collection of calendar events for a given user"
+    }
+  }
+}
